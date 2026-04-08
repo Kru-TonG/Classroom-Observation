@@ -684,17 +684,41 @@
             const teacherData = {};
             data.forEach(row => {
                 const name = row[3]; if (!name) return;
-                if (!teacherData[name]) teacherData[name] = { scoresA: [], scoresB: [] };
-                if (['A', 'A1', 'A2'].includes(row[1])) teacherData[name].scoresA.push(parseFloat(row[7]));
-                else teacherData[name].scoresB.push(parseFloat(row[7]));
+                const type = row[1];
+                if (!teacherData[name]) teacherData[name] = { A: [], A1: [], B: [], B2: [] };
+                if (teacherData[name][type] !== undefined) {
+                    teacherData[name][type].push(parseFloat(row[7]));
+                }
             });
             const chartLabels = Object.keys(teacherData);
-            const chartDataA = chartLabels.map(name => { const s = teacherData[name].scoresA; return s.length ? s.reduce((a, b) => a + b, 0) / s.length : 0; });
-            const chartDataB = chartLabels.map(name => { const s = teacherData[name].scoresB; return s.length ? s.reduce((a, b) => a + b, 0) / s.length : 0; });
+            const getAvg = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+            
+            const dataA = chartLabels.map(name => getAvg(teacherData[name].A));
+            const dataA1 = chartLabels.map(name => getAvg(teacherData[name].A1));
+            const dataB = chartLabels.map(name => getAvg(teacherData[name].B));
+            const dataB2 = chartLabels.map(name => getAvg(teacherData[name].B2));
+
             dashboardChartInstance = new Chart(document.getElementById('dashboardChart').getContext('2d'), {
                 type: 'bar',
-                data: { labels: chartLabels, datasets: [{ label: 'ผลประเมินการสอนจริง (%)', data: chartDataA, backgroundColor: 'rgba(79, 70, 229, 0.7)'}, { label: 'ผลประเมินแผนฯ (%)', data: chartDataB, backgroundColor: 'rgba(13, 148, 136, 0.7)' }] },
-                options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { position: 'top' } } },
+                data: { 
+                    labels: chartLabels, 
+                    datasets: [
+                        { label: 'สอนจริง (ครู)', data: dataA, backgroundColor: 'rgba(59, 130, 246, 0.7)', borderColor: 'rgb(59, 130, 246)', borderWidth: 1 },
+                        { label: 'สอนจริง (ผบ.)', data: dataA1, backgroundColor: 'rgba(79, 70, 229, 0.7)', borderColor: 'rgb(79, 70, 229)', borderWidth: 1 },
+                        { label: 'แผนฯ (ครู)', data: dataB, backgroundColor: 'rgba(20, 184, 166, 0.7)', borderColor: 'rgb(20, 184, 166)', borderWidth: 1 },
+                        { label: 'แผนฯ (หน.)', data: dataB2, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: 'rgb(16, 185, 129)', borderWidth: 1 }
+                    ] 
+                },
+                options: { 
+                    responsive: true, 
+                    scales: { 
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'ร้อยละ (%)' } } 
+                    }, 
+                    plugins: { 
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%` } }
+                    } 
+                },
             });
         }
         function printDashboard() {
