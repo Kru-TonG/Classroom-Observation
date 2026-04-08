@@ -698,15 +698,37 @@
             const dataB = chartLabels.map(name => getAvg(teacherData[name].B));
             const dataB2 = chartLabels.map(name => getAvg(teacherData[name].B2));
 
-            dashboardChartInstance = new Chart(document.getElementById('dashboardChart').getContext('2d'), {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            // Function to create diagonal pattern
+            function createPattern(color) {
+                const pCanvas = document.createElement('canvas');
+                pCanvas.width = 8;
+                pCanvas.height = 8;
+                const pCtx = pCanvas.getContext('2d');
+                pCtx.strokeStyle = color;
+                pCtx.lineWidth = 2;
+                pCtx.beginPath();
+                pCtx.moveTo(0, 8);
+                pCtx.lineTo(8, 0);
+                pCtx.stroke();
+                return ctx.createPattern(pCanvas, 'repeat');
+            }
+
+            const blueColor = 'rgba(59, 130, 246, 0.8)';
+            const greenColor = 'rgba(16, 185, 129, 0.8)';
+            const bluePattern = createPattern(blueColor);
+            const greenPattern = createPattern(greenColor);
+
+            dashboardChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: { 
                     labels: chartLabels, 
                     datasets: [
-                        { label: 'สอนจริง (ครู)', data: dataA, backgroundColor: 'rgba(59, 130, 246, 0.7)', borderColor: 'rgb(59, 130, 246)', borderWidth: 1 },
-                        { label: 'สอนจริง (ผบ.)', data: dataA1, backgroundColor: 'rgba(79, 70, 229, 0.7)', borderColor: 'rgb(79, 70, 229)', borderWidth: 1 },
-                        { label: 'แผนฯ (ครู)', data: dataB, backgroundColor: 'rgba(20, 184, 166, 0.7)', borderColor: 'rgb(20, 184, 166)', borderWidth: 1 },
-                        { label: 'แผนฯ (หน.)', data: dataB2, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderColor: 'rgb(16, 185, 129)', borderWidth: 1 }
+                        { label: 'สอนจริง (ครู)', data: dataA, backgroundColor: blueColor, borderColor: 'rgb(59, 130, 246)', borderWidth: 1 },
+                        { label: 'สอนจริง (ผบ.)', data: dataA1, backgroundColor: bluePattern, borderColor: 'rgb(59, 130, 246)', borderWidth: 1 },
+                        { label: 'แผนฯ (ครู)', data: dataB, backgroundColor: greenColor, borderColor: 'rgb(16, 185, 129)', borderWidth: 1 },
+                        { label: 'แผนฯ (หน.)', data: dataB2, backgroundColor: greenPattern, borderColor: 'rgb(16, 185, 129)', borderWidth: 1 }
                     ] 
                 },
                 options: { 
