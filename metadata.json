@@ -1,0 +1,5 @@
+{
+  "name": "ระบบนิเทศและประเมินการสอนโรงเรียนสวนแตงวิทยา",
+  "description": "ระบบประเมินการสอนสำหรับโรงเรียน พัฒนาด้วย Google Apps Script พร้อม Dashboard สรุปผล",
+  "requestFramePermissions": []
+}
