@@ -178,6 +178,35 @@
                     </div>
             `;
 
+            if (suffix === 'teacher') {
+                html += `
+                    <div class="form-section bg-gray-50 print-hide-input">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">ไฟล์แนบ (แผนการสอนและรูปภาพ)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="teachingPlanFileA-${suffix}" class="block mb-1 font-medium text-gray-700">ไฟล์แผนการสอน (PDF)</label>
+                                <input type="file" id="teachingPlanFileA-${suffix}" class="p-2 border rounded-md w-full" accept=".pdf">
+                            </div>
+                            <div>
+                                <label for="imageFileA1-${suffix}" class="block mb-1 font-medium text-gray-700">ภาพขณะรับการนิเทศ 1</label>
+                                <input type="file" id="imageFileA1-${suffix}" class="p-2 border rounded-md w-full" accept="image/*">
+                            </div>
+                             <div>
+                                <label for="imageFileA2-${suffix}" class="block mb-1 font-medium text-gray-700">ภาพขณะรับการนิเทศ 2</label>
+                                <input type="file" id="imageFileA2-${suffix}" class="p-2 border rounded-md w-full" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section bg-gray-50 print-only">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">ไฟล์แนบ</h3>
+                        <p class="mt-2"><strong>ลิงก์ไฟล์แผนการสอน:</strong> <span id="printTeachingPlanFileUrlA-${suffix}" class="print-value"></span></p>
+                        <p class="mt-2"><strong>ลิงก์ภาพที่ 1:</strong> <span id="printImageFileUrlA1-${suffix}" class="print-value"></span></p>
+                        <p class="mt-2"><strong>ลิงก์ภาพที่ 2:</strong> <span id="printImageFileUrlA2-${suffix}" class="print-value"></span></p>
+                    </div>
+                `;
+            }
+
             if (showPart1) {
                 html += `
                     <h2 class="text-2xl font-bold text-indigo-700 mb-6 border-b-2 border-indigo-200 pb-2">ส่วนที่ 1: การประเมินการสอนจริงในชั้นเรียน</h2>
@@ -221,31 +250,6 @@
                 html += `
                     <h2 class="text-2xl font-bold text-indigo-700 mb-6 border-b-2 border-indigo-200 pb-2">ส่วนที่ 2: การประเมินแผนการจัดการเรียนรู้</h2>
                     
-                    <div class="form-section bg-gray-50 print-hide-input">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">ไฟล์แนบ (แผนการสอนและรูปภาพ)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label for="teachingPlanFileA-${suffix}" class="block mb-1 font-medium text-gray-700">ไฟล์แผนการสอน (PDF)</label>
-                                <input type="file" id="teachingPlanFileA-${suffix}" class="p-2 border rounded-md w-full" accept=".pdf">
-                            </div>
-                            <div>
-                                <label for="imageFileA1-${suffix}" class="block mb-1 font-medium text-gray-700">ภาพขณะรับการนิเทศ 1</label>
-                                <input type="file" id="imageFileA1-${suffix}" class="p-2 border rounded-md w-full" accept="image/*">
-                            </div>
-                             <div>
-                                <label for="imageFileA2-${suffix}" class="block mb-1 font-medium text-gray-700">ภาพขณะรับการนิเทศ 2</label>
-                                <input type="file" id="imageFileA2-${suffix}" class="p-2 border rounded-md w-full" accept="image/*">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section bg-gray-50 print-only">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">ไฟล์แนบ</h3>
-                        <p class="mt-2"><strong>ลิงก์ไฟล์แผนการสอน:</strong> <span id="printTeachingPlanFileUrlA-${suffix}" class="print-value"></span></p>
-                        <p class="mt-2"><strong>ลิงก์ภาพที่ 1:</strong> <span id="printImageFileUrlA1-${suffix}" class="print-value"></span></p>
-                        <p class="mt-2"><strong>ลิงก์ภาพที่ 2:</strong> <span id="printImageFileUrlA2-${suffix}" class="print-value"></span></p>
-                    </div>
-
                     <div class="text-sm text-gray-600 mb-4 p-2 bg-gray-50 rounded-md"><strong>เกณฑ์การให้คะแนน (แผนการสอน):</strong> 1=เหมาะสมน้อยที่สุด, 2=เหมาะสมน้อย, 3=เหมาะสมปานกลาง, 4=เหมาะสมมาก, 5=เหมาะสมมากที่สุด</div>
                     
                     <div class="space-y-6">
